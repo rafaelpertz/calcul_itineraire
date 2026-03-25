@@ -31,7 +31,7 @@ class Waypoint {
 			std::cout << nom << " Longitude: " << lon << " Latitude: " << lat << "\n";
 		}
 		
-		virutal bool isVille() const {
+		virtual bool isVille() const {
 			return false;}
 };
 #endif

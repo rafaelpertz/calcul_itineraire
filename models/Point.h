@@ -12,7 +12,7 @@ class Point {
 		float lon;
 		float lat;
 	public : 
-		Point (int num, float lat, float lon) num(num), lat(lat), lon(lon){}; 
+		Point (int num, float lat, float lon): num(num), lat(lat), lon(lon){}; 
 		~Point (){};
 		float getLon() const{
 			return lon;
