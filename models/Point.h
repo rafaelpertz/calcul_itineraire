@@ -12,7 +12,8 @@ class Point {
 		float lon;
 		float lat;
 	public : 
-		Point (); // est ce qu'il faut rajouter des trucs ici ?
+		Point (int num, float lat, float lon) num(num), lat(lat), lon(lon){}; 
+		~Point (){};
 		float getLon() const{
 			return lon;
 		}

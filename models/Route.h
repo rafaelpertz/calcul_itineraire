@@ -24,9 +24,13 @@ class Route {
 		int getDistance() const{
 			return distance;
 		}
-		std::string getInfos(); // il y a surement des trucs à rajouter
+		std::string getInfos()const{
+			std::ostringstream texte;
+			texte << "Route de "<< i_deb << " à " << i_fin << "(distance : " << distance << \n;
+			return texte.str();
+		}
 		void affiche() const{
-			//ecrire la fonction
+			std::cout << "Route de "<< i_deb << " à " << i_fin << "(distance : " << distance << \n;
 		}
 };
 #endif

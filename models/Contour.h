@@ -16,8 +16,10 @@ class Contour {
 		float lat;
 		std::vector<Point> points;
 	public :
-		Mur (){}; 
-		std::vector<Point> &getPoints() {
+		Contour(){};
+		~Contour(){};
+		
+		std::vector<Point> getPoints() {
 			return points;
 		}
 		void ajoutUnPoint(const Point& pt){
