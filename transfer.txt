@@ -1,38 +1,49 @@
-#ifndef BDD1_H
-#define BDD1_H
-
 #include <iostream>
-#include <string>
-#include <vector>
-#include <clocale>
-
-#include <cppconn/driver.h>
-#include <cppconn/resultset.h>
-#include <cppconn/statement.h>
-#include <cppconn/connection.h>
-
-#include "Waypoint.h"
-#include "Ville.h"
-#include "Route.h"
-#include "Contour.h"
-#include "Point.h"
-
-class BDD1 {
-public:
-    BDD1(std::string host, std::string nomBDD, std::string login, std::string pwd);
-    BDD1() : con(nullptr) {}
-    ~BDD1();
-
-    std::vector<Waypoint> getAllWaypoints();
-    std::vector<Ville> getAllVilles();
-    std::vector<Route> getAllRoutes();
-    Contour getContour();
-
-    // Recherche spécifique
-    Ville getVilleByNom(std::string nom);
-
-private:
-    sql::Connection *con;
-};
-
-#endif
+    2 #include <vector>
+    3 #include <cppconn/exception.h>
+    4
+    5 #include "BDD1.h"
+    6 #include "Ville.h"
+    7 #include "Waypoint.h"
+    8 #include "Contour.h"
+    9 #include "Route.h"
+   10
+   11 int main(void) {
+   12     std::cout << "--- Test de la base de données Itinéraires ---" << std::endl;
+   13
+   14     try {
+   15         // Paramètres à adapter selon votre configuration (Hôte, Base, Login, MDP)
+   16         BDD1 bdd("tcp://localhost:3306", "itineraires", "isen", "isen29");
+   17
+   18         // 1. Tester la récupération des villes
+   19         std::cout << "\nListe des villes :" << std::endl;
+   20         std::vector<Ville> villes = bdd.getAllVilles();
+   21         for (const auto& v : villes) {
+   22             v.affiche();
+   23         }
+   24
+   25         // 2. Tester la récupération d'une ville précise
+   26         std::cout << "\nRecherche de 'Nantes' :" << std::endl;
+   27         Ville nantes = bdd.getVilleByNom("Nantes");
+   28         nantes.affiche();
+   29
+   30         // 3. Tester le contour
+   31         std::cout << "\nRécupération du contour (10 premiers points) :" << std::endl;
+   32         Contour contour = bdd.getContour();
+   33         std::vector<Point> pts = contour.getPoints();
+   34         for (size_t i = 0; i < pts.size() && i < 10; ++i) {
+   35             pts[i].affiche();
+   36         }
+   37         std::cout << "Total points contour : " << pts.size() << std::endl;
+   38
+   39     }
+   40     catch (sql::SQLException &e) {
+   41         std::cout << "# ERR: " << e.what();
+   42         std::cout << " (MySQL error code: " << e.getErrorCode() << ")" << std::endl;
+   43     }
+   44     catch (...) {
+   45         std::cout << "Erreur inconnue" << std::endl;
+   46     }
+   47
+   48     return 0;
+   49 }
