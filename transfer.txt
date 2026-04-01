@@ -1,20 +1,7 @@
-class BDD1 {
-public:
-    BDD1(std::string host, std::string nomBDD, std::string login, std::string pwd);
-    BDD1() : con(nullptr) {}
-    ~BDD1();
+#ifndef BDD1_H
+#define BDD1_H
 
-    std::vector<Waypoint> getAllWaypoints();
-    std::vector<Ville> getAllVilles();
-    std::vector<Route> getAllRoutes();
-    std::vector<ContourPoint> getAllContours();
-
-    // Optionnel : méthodes de recherche spécifiques
-    Ville getVilleByNom(std::string nom);
-    std::vector<Route> getRoutesFrom(std::string nom_ville);
-
-private:
-    sql::Connection *con;
-};
-
-#endif
+#include <iostream>
+#include <string>
+#include <vector>
+#include <clocale>
