@@ -13,7 +13,7 @@ int main(void) {
 	std::vector<Mur> tab_murs;
 
 	try {
-		BDD bdd("tcp://localhost:3306", "plans", "isen", "isen29");
+		BDD bdd("tcp://localhost:3306", "itineraires", "isen", "isen29");
 		plan = bdd.selectPlan(1);
 		bdd.ajouterMurs(plan);
 		for ( auto &mur : plan.getMurs() ){

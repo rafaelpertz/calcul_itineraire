@@ -1,0 +1,137 @@
+#include "BDDcal.h"
+
+BDD1::BDD1(std::string host, std::string nomBDD, std::string login, std::string pwd) {
+    try {
+        sql::Driver *driver = get_driver_instance();
+        con = driver->connect(host, login, pwd);
+        con->setSchema(nomBDD);
+        setlocale(LC_ALL, "C");
+    } catch (sql::SQLException &e) {
+        std::cerr << "Erreur de connexion : " << e.what() << std::endl;
+        con = nullptr;
+    }
+}
+
+BDD1::~BDD1() {
+    if (con) {
+        delete con;
+    }
+}
+
+std::vector<Waypoint> BDD1::getAllWaypoints() {
+    std::vector<Waypoint> res_list;
+    if (!con) return res_list;
+
+    sql::Statement *stmt = con->createStatement();
+    sql::ResultSet *res = stmt->executeQuery("SELECT * FROM waypoint");
+
+    while (res->next()) {
+        res_list.push_back(Waypoint(
+            res->getString("nom"),
+            (float)res->getDouble("lon"),
+            (float)res->getDouble("lat")
+        ));
+    }
+
+    delete res;
+    delete stmt;
+    return res_list;
+}
+
+std::vector<Ville> BDD1::getAllVilles() {
+    std::vector<Ville> res_list;
+    if (!con) return res_list;
+
+    sql::Statement *stmt = con->createStatement();
+    // Jointure pour récupérer les coordonnées du Waypoint correspondant à la ville
+    sql::ResultSet *res = stmt->executeQuery(
+        "SELECT v.*, w.lat, w.lon FROM ville v JOIN waypoint w ON v.nom = w.nom"
+    );
+
+    while (res->next()) {
+        res_list.push_back(Ville(
+            res->getString("code_postal"),
+            res->getInt("nb_habitants"),
+            res->getString("site"),
+            res->getString("nom"),
+            (float)res->getDouble("lon"),
+            (float)res->getDouble("lat")
+        ));
+    }
+
+    delete res;
+    delete stmt;
+    return res_list;
+}
+
+std::vector<Route> BDD1::getAllRoutes() {
+    std::vector<Route> res_list;
+    if (!con) return res_list;
+
+    sql::Statement *stmt = con->createStatement();
+    sql::ResultSet *res = stmt->executeQuery("SELECT * FROM route");
+
+    // Note: Dans Route.h, le constructeur attend des int pour i_deb et i_fin.
+    // Mais dans map.sql, la table route utilise des VARCHAR (noms de villes).
+    // Si Route.h est conçu pour des indices, il faudrait une logique de conversion.
+    // Ici, j'utilise 0 par défaut pour respecter la signature Route(int, int, int).
+    while (res->next()) {
+        res_list.push_back(Route(
+            0, // i_deb (attendu int)
+            0, // i_fin (attendu int)
+            res->getInt("distance")
+        ));
+    }
+
+    delete res;
+    delete stmt;
+    return res_list;
+}
+
+Contour BDD1::getContour() {
+    Contour contour;
+    if (!con) return contour;
+
+    sql::Statement *stmt = con->createStatement();
+    sql::ResultSet *res = stmt->executeQuery("SELECT * FROM contour ORDER BY num_pt");
+
+    while (res->next()) {
+        Point pt(
+            res->getInt("num_pt"), 
+            "", // nom (non utilisé ici)
+            res->getInt("num_pt"), 
+            res->getDouble("lon"), 
+            res->getDouble("lat")
+        );
+        contour.ajoutUnPoint(pt);
+    }
+
+    delete res;
+    delete stmt;
+    return contour;
+}
+
+Ville BDD1::getVilleByNom(std::string nom) {
+    if (!con) return Ville();
+
+    sql::Statement *stmt = con->createStatement();
+    sql::ResultSet *res = stmt->executeQuery(
+        "SELECT v.*, w.lat, w.lon FROM ville v JOIN waypoint w ON v.nom = w.nom WHERE v.nom = '" + nom + "'"
+    );
+
+    Ville v;
+    if (res->next()) {
+        v = Ville(
+            res->getString("code_postal"),
+            res->getInt("nb_habitants"),
+            res->getString("site"),
+            res->getString("nom"),
+            (float)res->getDouble("lon"),
+            (float)res->getDouble("lat")
+        );
+    }
+
+    delete res;
+    delete stmt;
+    return v;
+}
