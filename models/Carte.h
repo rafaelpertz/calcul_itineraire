@@ -18,7 +18,9 @@ class Carte {
 		std::vector<Ville> villes;
 		std::vector<Route> routes;
 	public:
+		Carte(Contour contour, std::vector<Waypoint> waypoints, std::vector<Ville> villes, std::vector<Route> routes): contour(contour), waypoints(waypoints), villes(villes), routes(routes){}
 		
+		~Carte(){} 
 		
 };
 #endif

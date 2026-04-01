@@ -13,7 +13,7 @@ class Waypoint {
 		float lat;
 	public : 
 		Waypoint (std::string nom="", float lon=0, float lat=0): nom(nom), lon(lon), lat(lat) {}
-		Waypoint(){}
+		~Waypoint(){}
 		
 		float getLon() const{
 			return lon;}
