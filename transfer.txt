@@ -1,0 +1,137 @@
+#include "BDD1.h"
+
+BDD1::BDD1(std::string host, std::string nomBDD, std::string login, std::string pwd) {
+    try {
+        sql::Driver *driver = get_driver_instance();
+        con = driver->connect(host, login, pwd);
+        con->setSchema(nomBDD);
+        setlocale(LC_ALL, "C");
+    } catch (sql::SQLException &e) {
+        std::cerr << "Erreur de connexion : " << e.what() << std::endl;
+        con = nullptr;
+    }
+}
+
+BDD1::~BDD1() {
+    if (con) {
+        delete con;
+    }
+}
+
+std::vector<Waypoint> BDD1::getAllWaypoints() {
+    std::vector<Waypoint> res_list;
+    if (!con) return res_list;
+
+    sql::Statement *stmt = con->createStatement();
+    sql::ResultSet *res = stmt->executeQuery("SELECT * FROM waypoint");
+
+    while (res->next()) {
+        res_list.push_back({res->getString("nom"), res->getDouble("lat"), res->getDouble("lon")});
+    }
+
+    delete res;
+    delete stmt;
+    return res_list;
+}
+
+std::vector<Ville> BDD1::getAllVilles() {
+    std::vector<Ville> res_list;
+    if (!con) return res_list;
+
+    sql::Statement *stmt = con->createStatement();
+    sql::ResultSet *res = stmt->executeQuery("SELECT * FROM ville");
+
+    while (res->next()) {
+        res_list.push_back({
+            res->getString("nom"),
+            res->getString("code_postal"),
+            res->getInt("nb_habitants"),
+            res->getString("site")
+        });
+    }
+
+    delete res;
+    delete stmt;
+    return res_list;
+}
+
+std::vector<Route> BDD1::getAllRoutes() {
+    std::vector<Route> res_list;
+    if (!con) return res_list;
+
+    sql::Statement *stmt = con->createStatement();
+    sql::ResultSet *res = stmt->executeQuery("SELECT * FROM route");
+
+    while (res->next()) {
+        res_list.push_back({
+            res->getString("nom_debut"),
+            res->getString("nom_fin"),
+            res->getInt("distance")
+        });
+    }
+
+    delete res;
+    delete stmt;
+    return res_list;
+}
+
+std::vector<ContourPoint> BDD1::getAllContours() {
+    std::vector<ContourPoint> res_list;
+    if (!con) return res_list;
+
+    sql::Statement *stmt = con->createStatement();
+    sql::ResultSet *res = stmt->executeQuery("SELECT * FROM contour ORDER BY num_pt");
+
+    while (res->next()) {
+        res_list.push_back({
+            res->getInt("num_pt"),
+            res->getDouble("lat"),
+            res->getDouble("lon")
+        });
+    }
+
+    delete res;
+    delete stmt;
+    return res_list;
+}
+
+Ville BDD1::getVilleByNom(std::string nom) {
+    if (!con) return {};
+
+    sql::Statement *stmt = con->createStatement();
+    sql::ResultSet *res = stmt->executeQuery("SELECT * FROM ville WHERE nom = '" + nom + "'");
+
+    Ville v = {};
+    if (res->next()) {
+        v = {
+            res->getString("nom"),
+            res->getString("code_postal"),
+            res->getInt("nb_habitants"),
+            res->getString("site")
+        };
+    }
+
+    delete res;
+    delete stmt;
+    return v;
+}
+
+std::vector<Route> BDD1::getRoutesFrom(std::string nom_ville) {
+    std::vector<Route> res_list;
+    if (!con) return res_list;
+
+    sql::Statement *stmt = con->createStatement();
+    sql::ResultSet *res = stmt->executeQuery("SELECT * FROM route WHERE nom_debut = '" + nom_ville + "'");
+
+    while (res->next()) {
+        res_list.push_back({
+            res->getString("nom_debut"),
+            res->getString("nom_fin"),
+            res->getInt("distance")
+        });
+    }
+
+    delete res;
+    delete stmt;
+    return res_list;
+}
