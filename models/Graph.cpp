@@ -6,8 +6,8 @@
 //il n'est pas censé être créer ici
 
 int TableauDistance(){
-	distance = 0;
-	laf = [];
+	int distance = 0;
+	std::vector<int> laf = [];
 	
 	//le but de la fonction va être de connaitre la distance entre chaque ville
 	for(i=0; i < laf.size()-1; i++){
@@ -19,8 +19,8 @@ int TableauDistance(){
 				distance += route.getDistance();
 				}
 		}
-		return distance
 	}
+	return distance
 }
 
 int PlusCourtChemin(){
