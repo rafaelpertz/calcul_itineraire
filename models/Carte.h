@@ -22,5 +22,27 @@ class Carte {
 		
 		~Carte(){} 
 		
+		Contour getContour() const {
+			return this->contour;
+		}
+		
+		std::vector<Waypoint> getWaypoints() const {
+			return this->waypoints;
+		}
+		std::vector<Waypoint> getVilles() const {
+			return this->villes;
+		}
+		std::vector<Waypoint> getRoutes() const {
+			return this->routes;
+		}
+		
+		
+		void addWaypoint(Waypoint waypoint) {
+			this->waypoints.push_back(waypoint);
+		}
+		void addVille(Ville ville) {
+			this->waypoints.push_back(ville);
+		}
+		
 };
 #endif

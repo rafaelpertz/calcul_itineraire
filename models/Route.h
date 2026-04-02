@@ -13,7 +13,7 @@ class Route {
 		int i_fin;
 		int distance;
 	public :
-		Route(int debut=0, int fin=0, int distance=0): i_deb(debut), i_fin(fin), distance(distance){}
+		Route(char debut='', char fin='', int distance=0): i_deb(debut), i_fin(fin), distance(distance){}
 		Route(){}
 		int getIDeb() const{
 			return i_deb;
