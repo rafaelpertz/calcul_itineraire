@@ -1,0 +1,20 @@
+testBDDPlan1.cpp: In function ‘int main()’:
+testBDDPlan1.cpp:36:34: error: ‘__gnu_cxx::__alloc_traits<std::allocator<Point>, Point>::value_type’ {aka ‘class Point’} has no member named ‘getInfos’
+   36 |              std::cout << pts[i].getInfos() << std::endl;
+      |                                  ^~~~~~~~
+BDDcal.cpp: In member function ‘Contour BDD1::getContour()’:
+BDDcal.cpp:105:9: error: no matching function for call to ‘Point::Point(int32_t, const char [1], int32_t, long double, long double)’
+  105 |         );
+      |         ^
+In file included from ../Contour.h:10,
+                 from BDDcal.h:17,
+                 from BDDcal.cpp:1:
+../Point.h:15:17: note: candidate: ‘Point::Point(int, float, float)’
+   15 |                 Point (int num, float lat, float lon): num(num), lat(lat), lon(lon){};
+      |                 ^~~~~
+../Point.h:15:17: note:   candidate expects 3 arguments, 5 provided
+../Point.h:9:7: note: candidate: ‘constexpr Point::Point(const Point&)’
+    9 | class Point {
+      |       ^~~~~
+../Point.h:9:7: note:   candidate expects 1 argument, 5 provided
+
