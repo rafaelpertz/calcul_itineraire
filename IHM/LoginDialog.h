@@ -7,31 +7,43 @@
 #include <QPushButton>
 #include <QMessageBox>
 #include <QGridLayout>
+#include <QMessageBox>
+using namespace std;
 
-#include <string>
-
-class LoginDialog : public QDialog
-{
+class LoginDialog : public QDialog {
     Q_OBJECT
-public:
-    explicit LoginDialog(QWidget *parent = 0);
-    ~LoginDialog();
-	void getResult( std::string& host, std::string& base,
-        std::string& username, std::string& password );
+    public:
+        LoginDialog(QWidget* parent = nullptr);
 
-// Slot function
-public slots:
-    void login();
+        ~LoginDialog(){};
 
-private:
-    QLineEdit *hostEditLine;
-    QLineEdit *baseEditLine;
-    QLineEdit *userEditLine;
-    QLineEdit *pwdEditLine;
+        // Getter 
+        void getResult(string& host, string& database, string& username, string& password);
 
-    QString hostname;
-    QString basename;
-    QString username;
-    QString password;
+    public slots:
+        void slotLogin();
+
+
+    private:
+       // QDialog (visual) attributes
+       QLabel* hostLabel;
+       QLabel* databaseLabel;
+       QLabel* usernameLabel;
+       QLabel* passwordLabel;
+       QLineEdit* hostLineEdit;
+       QLineEdit* usernameLineEdit;
+       QLineEdit* databaseLineEdit;
+       QLineEdit* passwordLineEdit;
+       QPushButton* loginButton;
+       QPushButton* cancelButton;
+
+       // LoginDialog attributes
+       QString host;
+       QString database;
+       QString username;
+       QString password;
 };
+
+
+
 #endif
