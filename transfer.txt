@@ -1,20 +1,63 @@
-testBDDPlan1.cpp: In function ‘int main()’:
-testBDDPlan1.cpp:36:34: error: ‘__gnu_cxx::__alloc_traits<std::allocator<Point>, Point>::value_type’ {aka ‘class Point’} has no member named ‘getInfos’
-   36 |              std::cout << pts[i].getInfos() << std::endl;
-      |                                  ^~~~~~~~
-BDDcal.cpp: In member function ‘Contour BDD1::getContour()’:
-BDDcal.cpp:105:9: error: no matching function for call to ‘Point::Point(int32_t, const char [1], int32_t, long double, long double)’
-  105 |         );
-      |         ^
-In file included from ../Contour.h:10,
-                 from BDDcal.h:17,
-                 from BDDcal.cpp:1:
-../Point.h:15:17: note: candidate: ‘Point::Point(int, float, float)’
-   15 |                 Point (int num, float lat, float lon): num(num), lat(lat), lon(lon){};
-      |                 ^~~~~
-../Point.h:15:17: note:   candidate expects 3 arguments, 5 provided
-../Point.h:9:7: note: candidate: ‘constexpr Point::Point(const Point&)’
-    9 | class Point {
-      |       ^~~~~
-../Point.h:9:7: note:   candidate expects 1 argument, 5 provided
+#ifndef LOGINDIALOG_H
+#define LOGINDIALOG_H
 
+#include <QDialog>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QMessageBox>
+#include <QGridLayout>
+#include <QMessageBox>
+using namespace std;
+
+/**
+ * @class LoginDialog, derived class from QDialog
+ * @brief Shows an interface for the connexion of the DB
+ *
+ * This class get the variable for the connexion and also checked if their are right to allow or not the connexion
+ *
+ * @author Boris Gangue
+ * @date March 31, 2025
+ */
+
+class LoginDialog : public QDialog {
+    Q_OBJECT
+    public:
+        // Constructor
+        LoginDialog(QWidget* parent = nullptr);
+
+        // Destructor
+        ~LoginDialog(){};
+
+        // Getteurs
+
+        //========= Get Data load by the user ========
+        void getResult(string& host, string& database, string& username, string& password);
+
+    public slots:
+        void slotLogin();
+
+
+    private:
+       // QDialog (visual) attributes
+       QLabel* hostLabel;
+       QLabel* databaseLabel;
+       QLabel* usernameLabel;
+       QLabel* passwordLabel;
+       QLineEdit* hostLineEdit;
+       QLineEdit* usernameLineEdit;
+       QLineEdit* databaseLineEdit;
+       QLineEdit* passwordLineEdit;
+       QPushButton* loginButton;
+       QPushButton* cancelButton;
+
+       // LoginDialog attributes
+       QString host;
+       QString database;
+       QString username;
+       QString password;
+};
+
+
+
+#endif
