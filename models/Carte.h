@@ -18,6 +18,7 @@ class Carte {
 		std::vector<Ville> villes;
 		std::vector<Route> routes;
 	public:
+		Carte() {}   // constructeur par défaut (nécessaire pour BDD qui déclare Carte comme membre)
 		Carte(Contour contour, std::vector<Waypoint> waypoints, std::vector<Ville> villes, std::vector<Route> routes): contour(contour), waypoints(waypoints), villes(villes), routes(routes){}
 		
 		~Carte(){} 
@@ -29,19 +30,26 @@ class Carte {
 		std::vector<Waypoint> getWaypoints() const {
 			return this->waypoints;
 		}
-		std::vector<Waypoint> getVilles() const {
+		std::vector<Ville> getVilles() const {
 			return this->villes;
 		}
-		std::vector<Waypoint> getRoutes() const {
+		std::vector<Route> getRoutes() const {
 			return this->routes;
 		}
-		
+
+		// Retourne la liste des noms de toutes les villes (utile pour l'interface Qt)
+		std::vector<std::string> getNomsVilles() const {
+			std::vector<std::string> noms;
+			for (const auto& ville : villes)
+				noms.push_back(ville.getNom());
+			return noms;
+		}
 		
 		void addWaypoint(Waypoint waypoint) {
 			this->waypoints.push_back(waypoint);
 		}
 		void addVille(Ville ville) {
-			this->waypoints.push_back(ville);
+			this->villes.push_back(ville);   // corrigé : était waypoints.push_back()
 		}
 		
 };

@@ -15,11 +15,17 @@ class Waypoint {
 		Waypoint (std::string nom="", float lon=0, float lat=0): nom(nom), lon(lon), lat(lat) {}
 		~Waypoint(){}
 		
+		std::string getNom() const {
+			return nom;
+		}
+		
 		float getLon() const{
-			return lon;}
-			
+			return lon;
+		}
+
 		float getLat() const{
-			return lat;}
+			return lat;
+		}
 			
 		std::string getInfos() const{
 			std::ostringstream texte;
@@ -32,6 +38,7 @@ class Waypoint {
 		}
 		
 		virtual bool isVille() const {
-			return false;}
+			return false;
+		}
 };
 #endif

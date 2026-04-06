@@ -2,28 +2,24 @@
 #define CONTOUR_H
 
 #include <iostream>
-#include <string>
 #include <vector>
-#include <iomanip>
-#include <sstream>
-
 #include "Point.h"
 
 class Contour {
-	private :
-		int num;
-		float lon;
-		float lat;
+	private:
 		std::vector<Point> points;
-	public :
-		Contour(){};
-		~Contour(){};
-		
-		std::vector<Point> getPoints() {
-			return points;
+	public:
+		Contour() {}
+		Contour(std::vector<Point> points) : points(points) {}
+		~Contour() {}
+
+		std::vector<Point> getPoints() const {
+		    return points;
 		}
-		void ajoutUnPoint(const Point& pt){
-			points.push_back(pt);
+
+		void ajoutUnPoint(const Point& pt) {
+		    points.push_back(pt);
 		}
 };
+
 #endif
