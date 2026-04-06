@@ -37,7 +37,6 @@ private:
 	void latLonToXY(float lon, float lat, double& x, double& y);
 	bool isVille(std::string nom);
 
-	// Indice du waypoint dans carte.getWaypoints() à partir de son nom (-1 si non trouvé)
 	int findWaypointIndex(const std::string& nom);
 };
 
