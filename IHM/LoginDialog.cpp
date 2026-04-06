@@ -1,69 +1,79 @@
-#include "LoginDialog.h"
+#include "LoginDialog.hpp"
 
-LoginDialog::LoginDialog (QWidget *parent):QDialog{parent} {
-	setWindowTitle( tr("BDD Login") );
+LoginDialog::LoginDialog(QWidget* parent) : QDialog(parent) {
+	// Creation des buttons, labels et lineEdits
+	this->hostLabel = new QLabel("Host");
+	this->databaseLabel = new QLabel("Database");
+	this->usernameLabel = new QLabel("Username");
+	this->passwordLabel = new QLabel("Password");
+	this->hostLineEdit = new QLineEdit;
+	this->hostLineEdit->setPlaceholderText("Host...");
+	this->usernameLineEdit = new QLineEdit;
+	this->usernameLineEdit->setPlaceholderText("Username...");
+	this->databaseLineEdit = new QLineEdit;
+	this->databaseLineEdit->setPlaceholderText("Database...");
+	this->passwordLineEdit = new QLineEdit;
+	//passwordLineEdit->setEchoMode(QLineEdit::Password);  // Hides characters (•)
+	this->passwordLineEdit->setPlaceholderText("Password...");
+	this->loginButton = new QPushButton("Login");
+	//this->loginButton->setStyleSheet("background-color: lightblue; color: black; font-weight: bold;");
+	this->cancelButton = new QPushButton("Cancel");
+	//this->cancelButton->setStyleSheet("background-color: red; color: black; font-weight: bold;");
 
-	// widgets vars locales
-	auto hostLabel {new QLabel{tr("Hôte (nom ou ip) ")}};
-	auto baseLabel {new QLabel{tr("Nom base données ")}};
-	auto userLabel {new QLabel{tr("User base ")}};
-	auto pwdLabel {new QLabel{tr("Mot de passe ")}};
+	// ajouter les widgets au QGridLayout
+	QGridLayout* gLayout = new QGridLayout;
+	this->setLayout(gLayout);
+	this->setWindowTitle("BDD Login");
+	gLayout->addWidget(this->hostLabel, 0, 0);
+	gLayout->addWidget(this->hostLineEdit, 0, 1);
+	gLayout->addWidget(this->databaseLabel, 1, 0);
+	gLayout->addWidget(this->databaseLineEdit, 1, 1);
+	gLayout->addWidget(this->usernameLabel, 2, 0);
+	gLayout->addWidget(this->usernameLineEdit, 2, 1);
+	gLayout->addWidget(this->passwordLabel, 3, 0);
+	gLayout->addWidget(this->passwordLineEdit, 3, 1);
+	gLayout->addWidget(this->loginButton, 4, 0);
+	gLayout->addWidget(this->cancelButton, 4, 1);
 
-	auto loginBtn {new QPushButton{tr("Login")}};
-	auto exitBtn {new QPushButton{tr("Annuler")}};
+	// Slots connexions
+	connect(this->loginButton, &QPushButton::clicked, this, &LoginDialog::slotLogin);
+	connect(this->cancelButton, &QPushButton::clicked, this, &QDialog::close); // reject : QDialog's slot method
 
-	// widgets attributs
-	hostEditLine = new QLineEdit;
-	hostEditLine->setText("localhost");
-	baseEditLine = new QLineEdit;
-	baseEditLine->setText("plans");
-	userEditLine = new QLineEdit;
-	pwdEditLine = new QLineEdit;
-	pwdEditLine->setEchoMode(QLineEdit::Password);
-
-	// set up the layout
-	auto formGridLayout {new QGridLayout};
-	// place components into the dialog
-	formGridLayout->addWidget( hostLabel, 0, 0 );
-	formGridLayout->addWidget( hostEditLine, 0, 1 );
-	formGridLayout->addWidget( baseLabel, 1, 0 );
-	formGridLayout->addWidget( baseEditLine, 1, 1 );
-	formGridLayout->addWidget( userLabel, 2, 0 );
-	formGridLayout->addWidget( userEditLine, 2, 1 );
-	formGridLayout->addWidget( pwdLabel, 3, 0 );
-	formGridLayout->addWidget( pwdEditLine, 3, 1 );
-	formGridLayout->addWidget( loginBtn, 4, 0 );
-	formGridLayout->addWidget( exitBtn, 4, 1 );
-
-	setLayout( formGridLayout );
-
-	// The signal is associated with the slot
-	connect(loginBtn, &QPushButton::clicked, this, &LoginDialog::login);
-	connect(exitBtn, &QPushButton::clicked, this, &QDialog::close);
 }
 
-LoginDialog::~LoginDialog(){
+//obtention et initialisatiion des parametres de base de donnée
+void LoginDialog::getResult(string& host, string& database, string& username, string& password) {
+	   host = this->host.toStdString();
+	   database =  this->database.toStdString();
+	   username = this->username.toStdString();
+	   password =  this->password.toStdString();
 }
 
-void LoginDialog::login(){
 
-	hostname = hostEditLine->text();
-	basename = baseEditLine->text();
-	username = userEditLine->text();
-	password = pwdEditLine->text();
+//Slot Login 
+void LoginDialog::slotLogin() {
+	QString host = this->hostLineEdit->text();
+	QString database = this->databaseLineEdit->text();
+	QString username = this->usernameLineEdit->text();
+	QString password = this->passwordLineEdit->text();
 
-	if ( !hostname.size() || !basename.size() ||
-	  !username.size() || !password.size() ){
-		QMessageBox::warning(this, tr("Warning"),
-			tr("Tous les champs doivent être remplis"));
+
+	QString errorMessage = "";
+	if(host.isEmpty()) {
+		errorMessage = "Host is invalid !";
+	} else if(database.isEmpty()) {
+		errorMessage = "Database is invalid !";
+	} else if(username.isEmpty()) {
+		errorMessage = "Username is invalid !";
+	} else if(password.isEmpty()) {
+		errorMessage = "Password is invalid !";
+	} else {
+		this->host = host;
+		this->database = database;
+		this->username = username;
+		this->password = password;
+		this->accept();            
 		return;
 	}
-	accept();
-}
-void LoginDialog::getResult(std::string& host, std::string& base,
-    std::string& user, std::string& pwd ){
-	host = hostname.toStdString();
-	base = basename.toStdString();
-	user = username.toStdString();
-	pwd = password.toStdString();
+	QMessageBox::critical(nullptr,"ERROR", errorMessage);   
 }
