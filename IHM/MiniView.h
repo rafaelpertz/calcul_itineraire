@@ -1,7 +1,7 @@
 #ifndef MINIVIEW_H
 #define MINIVIEW_H
 #include <QGraphicsView>
-#include "models/SceneCarte.hpp"
+#include "../models/SceneCarte.h"
 
 class MiniView : public QGraphicsView {
     Q_OBJECT

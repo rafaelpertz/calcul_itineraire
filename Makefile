@@ -14,10 +14,10 @@ EQ            = =
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB
+DEFINES       = -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -O2 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -O2 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I. -I. -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I. -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++
+INCPATH       = -I. -I. -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtWidgets -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I. -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++
 QMAKE         = /usr/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -40,7 +40,7 @@ DISTNAME      = calcul_itineraire1.0.0
 DISTDIR = /home/isen/Projet_2K26/calcul_itineraire/.tmp/calcul_itineraire1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1 -Wl,-rpath-link,/usr/lib/x86_64-linux-gnu
-LIBS          = $(SUBLIBS) /usr/lib/x86_64-linux-gnu/libQt6Gui.so /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libOpenGL.so /usr/lib/x86_64-linux-gnu/libQt6Core.so -lpthread -lGLX -lOpenGL   
+LIBS          = $(SUBLIBS) /usr/lib/x86_64-linux-gnu/libQt6Widgets.so /usr/lib/x86_64-linux-gnu/libQt6Gui.so /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libOpenGL.so /usr/lib/x86_64-linux-gnu/libQt6Core.so -lpthread -lGLX -lOpenGL   
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -120,6 +120,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/default_pre.prf \
@@ -131,6 +132,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/resources.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/moc.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/unix/opengl.prf \
+		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/uic.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/unix/thread.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/qmake_use.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/file_copies.prf \
@@ -213,6 +215,7 @@ Makefile: calcul_itineraire.pro /usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++/
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/default_pre.prf \
@@ -224,6 +227,7 @@ Makefile: calcul_itineraire.pro /usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++/
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/resources.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/moc.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/unix/opengl.prf \
+		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/uic.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/unix/thread.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/qmake_use.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/file_copies.prf \
@@ -232,6 +236,7 @@ Makefile: calcul_itineraire.pro /usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++/
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/lex.prf \
 		calcul_itineraire.pro \
+		/usr/lib/x86_64-linux-gnu/libQt6Widgets.prl \
 		/usr/lib/x86_64-linux-gnu/libQt6Gui.prl \
 		/usr/lib/x86_64-linux-gnu/libQt6Core.prl
 	$(QMAKE) -o Makefile calcul_itineraire.pro
@@ -280,6 +285,7 @@ Makefile: calcul_itineraire.pro /usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++/
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/qt_config.prf:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++/qmake.conf:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/exclusive_builds.prf:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/toolchain.prf:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/default_pre.prf:
@@ -291,6 +297,7 @@ Makefile: calcul_itineraire.pro /usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++/
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/resources.prf:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/moc.prf:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/unix/opengl.prf:
+/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/uic.prf:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/unix/thread.prf:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/qmake_use.prf:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/file_copies.prf:
@@ -299,6 +306,7 @@ Makefile: calcul_itineraire.pro /usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++/
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/yacc.prf:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/lex.prf:
 calcul_itineraire.pro:
+/usr/lib/x86_64-linux-gnu/libQt6Widgets.prl:
 /usr/lib/x86_64-linux-gnu/libQt6Gui.prl:
 /usr/lib/x86_64-linux-gnu/libQt6Core.prl:
 qmake: FORCE
@@ -355,22 +363,22 @@ compiler_moc_header_clean:
 moc_LoginDialog.cpp: IHM/LoginDialog.h \
 		moc_predefs.h \
 		/usr/lib/qt6/libexec/moc
-	/usr/lib/qt6/libexec/moc $(DEFINES) --include /home/isen/Projet_2K26/calcul_itineraire/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++ -I/home/isen/Projet_2K26/calcul_itineraire -I/home/isen/Projet_2K26/calcul_itineraire -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include IHM/LoginDialog.h -o moc_LoginDialog.cpp
+	/usr/lib/qt6/libexec/moc $(DEFINES) --include /home/isen/Projet_2K26/calcul_itineraire/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++ -I/home/isen/Projet_2K26/calcul_itineraire -I/home/isen/Projet_2K26/calcul_itineraire -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtWidgets -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include IHM/LoginDialog.h -o moc_LoginDialog.cpp
 
 moc_MainView.cpp: IHM/MainView.h \
 		moc_predefs.h \
 		/usr/lib/qt6/libexec/moc
-	/usr/lib/qt6/libexec/moc $(DEFINES) --include /home/isen/Projet_2K26/calcul_itineraire/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++ -I/home/isen/Projet_2K26/calcul_itineraire -I/home/isen/Projet_2K26/calcul_itineraire -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include IHM/MainView.h -o moc_MainView.cpp
+	/usr/lib/qt6/libexec/moc $(DEFINES) --include /home/isen/Projet_2K26/calcul_itineraire/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++ -I/home/isen/Projet_2K26/calcul_itineraire -I/home/isen/Projet_2K26/calcul_itineraire -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtWidgets -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include IHM/MainView.h -o moc_MainView.cpp
 
 moc_MainWindow.cpp: IHM/MainWindow.h \
 		moc_predefs.h \
 		/usr/lib/qt6/libexec/moc
-	/usr/lib/qt6/libexec/moc $(DEFINES) --include /home/isen/Projet_2K26/calcul_itineraire/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++ -I/home/isen/Projet_2K26/calcul_itineraire -I/home/isen/Projet_2K26/calcul_itineraire -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include IHM/MainWindow.h -o moc_MainWindow.cpp
+	/usr/lib/qt6/libexec/moc $(DEFINES) --include /home/isen/Projet_2K26/calcul_itineraire/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++ -I/home/isen/Projet_2K26/calcul_itineraire -I/home/isen/Projet_2K26/calcul_itineraire -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtWidgets -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include IHM/MainWindow.h -o moc_MainWindow.cpp
 
 moc_MiniView.cpp: IHM/MiniView.h \
 		moc_predefs.h \
 		/usr/lib/qt6/libexec/moc
-	/usr/lib/qt6/libexec/moc $(DEFINES) --include /home/isen/Projet_2K26/calcul_itineraire/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++ -I/home/isen/Projet_2K26/calcul_itineraire -I/home/isen/Projet_2K26/calcul_itineraire -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include IHM/MiniView.h -o moc_MiniView.cpp
+	/usr/lib/qt6/libexec/moc $(DEFINES) --include /home/isen/Projet_2K26/calcul_itineraire/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++ -I/home/isen/Projet_2K26/calcul_itineraire -I/home/isen/Projet_2K26/calcul_itineraire -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtWidgets -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include IHM/MiniView.h -o moc_MiniView.cpp
 
 moc_SceneCarte.cpp: models/SceneCarte.h \
 		models/Graphe.h \
@@ -382,12 +390,14 @@ moc_SceneCarte.cpp: models/SceneCarte.h \
 		models/Waypoint.h \
 		moc_predefs.h \
 		/usr/lib/qt6/libexec/moc
-	/usr/lib/qt6/libexec/moc $(DEFINES) --include /home/isen/Projet_2K26/calcul_itineraire/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++ -I/home/isen/Projet_2K26/calcul_itineraire -I/home/isen/Projet_2K26/calcul_itineraire -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include models/SceneCarte.h -o moc_SceneCarte.cpp
+	/usr/lib/qt6/libexec/moc $(DEFINES) --include /home/isen/Projet_2K26/calcul_itineraire/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++ -I/home/isen/Projet_2K26/calcul_itineraire -I/home/isen/Projet_2K26/calcul_itineraire -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtWidgets -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include models/SceneCarte.h -o moc_SceneCarte.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
+compiler_uic_make_all:
+compiler_uic_clean:
 compiler_yacc_decl_make_all:
 compiler_yacc_decl_clean:
 compiler_yacc_impl_make_all:

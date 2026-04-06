@@ -5,10 +5,10 @@
 #include <QGraphicsView>
 #include <QApplication>
 
-#include "MainView.hpp"
-#include "MiniView.hpp"
-#include "model/Carte.hpp"
-#include "model/SceneCarte.hpp"
+#include "MainView.h"
+#include "MiniView.h"
+#include "../models/Carte.h"
+#include "../models/SceneCarte.h"
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>

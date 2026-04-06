@@ -3,10 +3,10 @@
 #include <QMessageBox>
 
 #include <cppconn/exception.h>
-#include "model/Carte.hpp"
-#include "model/BDD.hpp"
-#include "view/MainWindow.hpp"
-#include "view/LoginDialog.hpp"
+#include "models/Carte.h"
+#include "models/BDD.h"
+#include "IHM/MainWindow.h"
+#include "IHM/LoginDialog.h"
 
 int main(int argc, char *argv[])
 {

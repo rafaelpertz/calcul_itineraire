@@ -1,4 +1,4 @@
-#include "LoginDialog.hpp"
+#include "LoginDialog.h"
 
 LoginDialog::LoginDialog(QWidget* parent) : QDialog(parent) {
 	// Creation des buttons, labels et lineEdits

@@ -9,7 +9,7 @@
 #include <QDesktopServices>
 #include <QUrl>
 #include <QCursor>
-#include "models/SceneCarte.hpp"
+#include "../models/SceneCarte.h"
 
  class MainView : public QGraphicsView {
 	Q_OBJECT
