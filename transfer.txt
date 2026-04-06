@@ -1,5 +1,5 @@
 #include "MainWindow.hpp"
-#
+
 /**
  * @brief Initialize the main window with its widgets
  * 
