@@ -31,7 +31,6 @@ SOURCES += main.cpp \
            IHM/LoginDialog.cpp \
            IHM/MainWindow.cpp \
            models/BDD.cpp \
-           models/Graph.cpp \
            models/Graphe.cpp \
            models/SceneCarte.cpp
 QT += widgets
