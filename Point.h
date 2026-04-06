@@ -11,20 +11,9 @@ class Point {
 		int num;
 		float lon;
 		float lat;
-
 	public : 
-		Point (int num, float lat, float lon)
-			: num(num), lon(lon), lat(lat) {}
-
-		~Point (){}
-
-		float getLon() const {
-			return lon;
-		}
-
-		float getLat() const {
-			return lat;
-		}
+		Point ();
+		float getLon();
+		float getLat();
 };
-
 #endif
