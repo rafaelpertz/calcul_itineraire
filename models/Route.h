@@ -1,51 +1,48 @@
+#ifndef _ROUTE_H_
+#define _ROUTE_H_
+
 #include <iostream>
-#include <QApplication>
-#include <QMessageBox>
+#include <string>
+#include <sstream>
 
-/*===Include of project===*/
-#include <cppconn/exception.h>
-#include "model/Carte.hpp"
-#include "model/BDD.hpp"
-#include "model/SceneCarte.hpp"
-#include "view/MainWindow.hpp"
-#include "view/LoginDialog.hpp"
+/**
+ * @class Route
+ * @brief Contains a collection of routes
+ * 
+ * This class contains getters to acces the informations
+ * And also display methods
+ * 
+ * @author Gaspard Vieujean
+ * @date March 31, 2025
+ */
 
-int main (int argc, char **argv){
-    QApplication app(argc,argv);
-    LoginDialog dlg;
-    std::string host, base, user, pwd;
+class Route {
+    public:
+       // Constructor
+       Route(int i_debut, int i_fin, int distance) : i_debut(i_debut), i_fin(i_fin), distance(distance) {}
+       
+       // Destructor
+       ~Route(){};
+       
+       // Getters
+       int getDebut() const {return i_debut;}
+       int getFin() const {return i_fin;}
+       int getDistance() const {return distance;}
+       std::string getInfos() const {
+        std::ostringstream texte;
+            texte << "Route: " << i_debut << " - " << i_fin
+                << " | Distance: " << distance << '\n';
+            return texte.str();
+        }
 
-
-    if(!dlg.exec()){
-        std::cout << "Sortie de l'application\n";
-        return 1;
-    }
-
-    //Récupération des saisies après fermeture de la Dialog box
-    dlg.getResult(host, base, user, pwd);
-    std::cout << "Lecture base routeplanner" << std::endl;
-    Carte carte;
-
-    /*host = "localhost";
-    base = "routeplanner";
-    user = "routePlanner";
-    pwd = "azerty1234";*/
-
-    try {
-        BDD bdd("tcp://"+host+":3306",base,user,pwd);
-        carte = bdd.getCarte();
-        std::cout << "Successfully get the map !! \n";
-    }
-    catch (sql::SQLException &e){
-        std::cout << "Erreur MYSQL, sortie du programme\n";
-        QMessageBox msg(QMessageBox::Critical, "Erreur mySQL", e.what());
-        msg.exec();
-        return 1;
-    }
+        void affiche() const {std::cout << "\t\tRoute\n " << "\n\t Start: " << i_debut << "\n\t End: " << i_fin << "\n\t Distance: " << distance << "\n";}
+    
+    private:
+        int i_debut;
+        int i_fin;
+        int distance;
 
 
-    MainWindow mw(carte);
-    mw.show();
+};
 
-    return app.exec();
-}
+#endif
