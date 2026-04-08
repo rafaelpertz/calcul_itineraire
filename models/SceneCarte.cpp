@@ -1,5 +1,8 @@
 #include "SceneCarte.h"
 
+/**
+ * @brief Constructeur : construit le graphe depuis la carte et dessine tous les éléments.
+ */
 SceneCarte::SceneCarte(Carte& carte) {
 	this->carte  = carte;
 	this->graphe = Graphe(this->carte);
@@ -10,6 +13,10 @@ SceneCarte::SceneCarte(Carte& carte) {
 	drawRoute(carte.getRoutes());
 }
 
+/**
+ * @brief Dessine le contour géographique sous forme de polygone vert avec bordure noire.
+ *        Chaque point est converti en coordonnées de scène via latLonToXY.
+ */
 void SceneCarte::drawContour(Contour contour) {
 	QPolygonF polygon;
 
@@ -25,6 +32,10 @@ void SceneCarte::drawContour(Contour contour) {
 	this->addItem(item);
 }
 
+/**
+ * @brief Dessine toutes les routes comme des segments de ligne noirs.
+ *        Les positions sont calculées depuis les coordonnées des waypoints de départ et d'arrivée.
+ */
 void SceneCarte::drawRoute(std::vector<Route> routes) {
 	std::vector<Waypoint> waypoints = this->carte.getWaypoints();
 
@@ -42,6 +53,11 @@ void SceneCarte::drawRoute(std::vector<Route> routes) {
 	}
 }
 
+/**
+ * @brief Dessine les villes sous forme de petits carrés gris (5x5 px).
+ *        Un tooltip avec les informations de la ville est associé à chaque carré.
+ *        Le nom de la ville est stocké en data(0) pour une identification future.
+ */
 void SceneCarte::drawVille(std::vector<Ville> villes) {
 	for (auto& ville : villes) {
 		double x, y;
@@ -51,11 +67,15 @@ void SceneCarte::drawVille(std::vector<Ville> villes) {
 		item->setPen(QPen(Qt::black, 1));
 		item->setBrush(QBrush(Qt::gray));
 		item->setToolTip(QString::fromStdString(ville.getInfos()));
-		item->setData(0, QString::fromStdString(ville.getNom()));
+		item->setData(0, QString::fromStdString(ville.getNom())); // Stockage du nom pour identification
 		this->addItem(item);
-		}
+	}
 }
 
+/**
+ * @brief Dessine les waypoints sous forme de petits cercles noirs (rayon 2 px).
+ *        Un tooltip avec les coordonnées est associé à chaque cercle.
+ */
 void SceneCarte::drawWaypoint(std::vector<Waypoint> waypoints) {
 	for (auto& wp : waypoints) {
 		double x, y;
@@ -70,6 +90,10 @@ void SceneCarte::drawWaypoint(std::vector<Waypoint> waypoints) {
 	}
 }
 
+/**
+ * @brief Dessine le chemin le plus court sous forme de segments rouges épais (2 px).
+ *        Parcourt les paires de waypoints consécutifs dans le chemin.
+ */
 void SceneCarte::drawShortestPath(std::vector<int> chemin) {
 	std::vector<Waypoint> waypoints = this->carte.getWaypoints();
 
@@ -87,15 +111,23 @@ void SceneCarte::drawShortestPath(std::vector<int> chemin) {
 	}
 }
 
+/**
+ * @brief Convertit des coordonnées géographiques en coordonnées de scène
+ *        en utilisant la projection de Mercator sphérique.
+ *        Le résultat est divisé par 1000 pour obtenir des valeurs exploitables à l'écran.
+ */
 void SceneCarte::latLonToXY(float lon, float lat, double& x, double& y) {
-	const double R = 6378137.0;
+	const double R = 6378137.0; // Rayon de la Terre en mètres
 	double lonRad = lon * M_PI / 180.0;
 	double latRad = lat * M_PI / 180.0;
 
 	x = R * lonRad / 1000.0;
-	y = R * log(tan(M_PI / 4.0 + latRad / 2.0)) / 1000.0;
+	y = R * log(tan(M_PI / 4.0 + latRad / 2.0)) / 1000.0; // Formule de Mercator
 }
 
+/**
+ * @brief Vérifie si un nom donné correspond à une ville existante dans la carte.
+ */
 bool SceneCarte::isVille(std::string nom) {
 	for (const auto& ville : this->carte.getVilles()) {
 		if (ville.getNom() == nom)
@@ -104,6 +136,10 @@ bool SceneCarte::isVille(std::string nom) {
 	return false;
 }
 
+/**
+ * @brief Recherche et retourne l'indice d'un waypoint par son nom.
+ *        Retourne -1 si le waypoint n'est pas trouvé.
+ */
 int SceneCarte::findWaypointIndex(const std::string& nom) {
 	std::vector<Waypoint> waypoints = this->carte.getWaypoints();
 	for (int i = 0; i < (int)waypoints.size(); i++) {
@@ -113,10 +149,17 @@ int SceneCarte::findWaypointIndex(const std::string& nom) {
 	return -1;
 }
 
+/// @brief Retourne la distance totale du dernier chemin calculé par le graphe.
 int SceneCarte::getDistance() {
 	return this->graphe.distanceChemin(this->graphe.dernierChemin);
 }
 
+/**
+ * @brief Calcule le chemin le plus court entre deux villes et le dessine sur la scène.
+ *        Vérifie d'abord la validité des deux noms de villes.
+ *        Si une ville est invalide, émet le signal signalInvalidVille.
+ *        Redessine entièrement la scène avant d'afficher le nouveau chemin en rouge.
+ */
 void SceneCarte::computeAndDrawShortestPath(const std::string& depart, const std::string& arrivee) {
 	if (!isVille(depart) || !isVille(arrivee)) {
 		std::string invalide = !isVille(depart) ? depart : arrivee;
@@ -130,6 +173,7 @@ void SceneCarte::computeAndDrawShortestPath(const std::string& depart, const std
 	std::vector<int> chemin = this->graphe.cheminLePlusCourt(i_depart, i_arrivee);
 	this->graphe.afficheChemin(chemin);
 
+	// Redessinage complet de la scène avant d'afficher le chemin
 	this->clear();
 	drawContour(carte.getContour());
 	drawWaypoint(carte.getWaypoints());
