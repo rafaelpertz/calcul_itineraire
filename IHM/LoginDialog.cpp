@@ -13,12 +13,10 @@ LoginDialog::LoginDialog(QWidget* parent) : QDialog(parent) {
 	this->databaseLineEdit = new QLineEdit;
 	this->databaseLineEdit->setPlaceholderText("Database...");
 	this->passwordLineEdit = new QLineEdit;
-	//passwordLineEdit->setEchoMode(QLineEdit::Password);  // Hides characters (•)
 	this->passwordLineEdit->setPlaceholderText("Password...");
+	this->passwordLineEdit->setEchoMode(QLineEdit::Password);
 	this->loginButton = new QPushButton("Login");
-	//this->loginButton->setStyleSheet("background-color: lightblue; color: black; font-weight: bold;");
 	this->cancelButton = new QPushButton("Cancel");
-	//this->cancelButton->setStyleSheet("background-color: red; color: black; font-weight: bold;");
 
 	// ajouter les widgets au QGridLayout
 	QGridLayout* gLayout = new QGridLayout;

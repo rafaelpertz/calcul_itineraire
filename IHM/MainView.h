@@ -14,84 +14,45 @@
  class MainView : public QGraphicsView {
     Q_OBJECT
     public :
-        // Constructeur : initialise la vue principale avec la scène, le widget parent et l'orientation du nord
         MainView(SceneCarte *scene, QWidget *w, int orientation_nord = 0)
             : QGraphicsView(scene, w), orientation_nord(orientation_nord) 
         {
             Q_UNUSED(scene);
-            scale(1, -1); // Inverse l'axe Y pour la cohérence des coordonnées géographiques
-            setMouseTracking(true); // Active le suivi de la souris sans clic nécessaire
-            setViewportUpdateMode(QGraphicsView::FullViewportUpdate); // Force la mise à jour complète pour éviter les artefacts
+            scale(1, -1); // Inverse l'axe Y 
+            setMouseTracking(true); // Active le suivi de la souris 
         }
 
         ~MainView(){}
 
     signals:
-        // Signal émis lors du changement de zone visible (utile pour mettre à jour la minimap)
+        // Signal émis lors du changement de zone visible
         void coord_viewport(QRectF);
-        // Signal émis lors du mouvement de la souris (renvoie les coordonnées réelles de la scène)
+        // Signal émis lors du mouvement de la souris
         void position(QPointF);
 
     protected:
-        // Ajuste automatiquement la vue lors du redimensionnement de la fenêtre
-        void resizeEvent (QResizeEvent*) override {
-            if (this->transform().m11() == 1) {
-                this->fitInView(sceneRect(), Qt::KeepAspectRatio);
-            }
-        }
-
-        /** @brief Gère le zoom interactif avec la molette de la souris. */
+        // Gère le zoom interactif avec la molette de la souris.
         void wheelEvent(QWheelEvent *event) override{
             int angle = event->angleDelta().y();
             qreal facteur_zoom = (angle > 0) ? 1.1 : 0.9;
             scale(facteur_zoom, facteur_zoom);
         }
 
-        /** @brief Intercepte le rendu pour calculer et émettre les limites de la vue actuelle. */
+        // Intercepte le rendu pour calculer et émettre les limites de la vue actuelle. 
         void paintEvent (QPaintEvent * event) override {
-            // Calcul du rectangle visible converti en coordonnées scène
             QPolygonF poly = mapToScene(viewport()->rect());
             emit coord_viewport(poly.boundingRect());
             
             QGraphicsView::paintEvent(event);
         }
 
-        /** @brief Suit le mouvement de la souris et émet sa position géographique. */
+        //Suit le mouvement de la souris et émet sa position géographique.
         void mouseMoveEvent(QMouseEvent *event) override{
             emit position(mapToScene(event->pos()));
             QGraphicsView::mouseMoveEvent(event);
         }
 
-        /** @brief Gère le clic droit pour ouvrir un menu contextuel vers Wikipédia. */
-        void mousePressEvent(QMouseEvent *event) override{
-            if(event->button() == Qt::RightButton){
-                QPointF pos_scene = mapToScene(event->pos());
-                // Cherche si un objet (ex: une ville) se trouve sous le clic
-                QGraphicsItem *item = scene()->itemAt(pos_scene, transform());
-
-                if(item) {
-                    // On suppose que la donnée "0" de l'objet contient le nom de la ville
-                    QString villeName = item->data(0).toString();
-                    if(!villeName.isEmpty()) {
-                        QMenu contextMenu;
-                        QAction *openWikipediaAction = new QAction("Afficher le Wikipédia de la ville", this);
-                        contextMenu.addAction(openWikipediaAction);
-
-                        // Ouvre le navigateur par défaut sur la page Wikipédia correspondante
-                        connect(openWikipediaAction, &QAction::triggered, this, [villeName](){
-                            QString url = QString("https://fr.wikipedia.org/wiki/%1").arg(villeName);
-                            QDesktopServices::openUrl(QUrl(url));
-                        });
-                        
-                        contextMenu.exec(QCursor::pos());
-                    }
-                } else {
-                    QGraphicsView::mousePressEvent(event);
-                }
-            }
-        }
-
-        /** @brief Dessine l'arrière-plan (Océan) et l'indicateur fixe du Nord. */
+        //Dessine l'arrière-plan (Océan) et l'indicateur fixe du Nord. 
         void drawBackground(QPainter *painter, const QRectF &) override {
             // 1. Dessin de l'eau en coordonnées "viewport" (fixe sur l'écran)
             painter->setWorldMatrixEnabled(false);
@@ -111,7 +72,7 @@
             painter->setWorldMatrixEnabled(true);
         }
 
-        /** @brief Dessine les éléments d'interface par-dessus la carte (échelle de distance). */
+        // Dessine les éléments d'interface par-dessus la carte (échelle de distance). 
         void drawForeground(QPainter *painter, const QRectF &) override {
             painter->setTransform(QTransform(), false); // On repasse en coordonnées écran (pixels)
             painter->setPen(QPen(Qt::black, 2));

@@ -25,7 +25,7 @@ class LoginDialog : public QDialog {
 
 
     private:
-       // QDialog (visual) attributes
+       // QDialog attributes
        QLabel* hostLabel;
        QLabel* databaseLabel;
        QLabel* usernameLabel;
