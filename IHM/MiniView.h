@@ -6,46 +6,45 @@
 class MiniView : public QGraphicsView {
     Q_OBJECT
     public :
-        // Constructor: Initializes the MiniView with the given SceneCarte and QWidget
+        // Constructeur : Initialise la MiniView avec la SceneCarte et le QWidget donnés
         MiniView(SceneCarte *scene, QWidget *w): QGraphicsView(scene, w) {
-            Q_UNUSED(scene); // Prevents unused warning for 'scene'
-            scale(1, -1); // Invert the y-axis to match coordinate system conventions
+            Q_UNUSED(scene); // Empêche l'avertissement "variable inutilisée" pour 'scene'
+            scale(1, -1); // Inverse l'axe Y pour correspondre aux conventions du système de coordonnées
         }
-
-      
 
         ~MiniView(){}
 
     public slots:
         void trace_viewport(QRectF rect_viewport){
-            cadre = rect_viewport; // Update the 'cadre' (frame) with the new rectangle
-            viewport()->update(); // Refresh the mini view to reflect the change
+            cadre = rect_viewport; // Met à jour le 'cadre' avec le nouveau rectangle
+            viewport()->update(); // Rafraîchit la mini-vue pour refléter le changement
         }
 
     protected:
         void drawForeground(QPainter *painter, const QRectF &) override {
-            painter->setPen(QPen(Qt::red, 0)); // Set a red pen for drawing the rectangle (frame)
-            painter->drawRect(cadre); // Draw the 'cadre' rectangle on the mini view
+            painter->setPen(QPen(Qt::red, 0)); // Définit un pinceau rouge pour dessiner le rectangle (cadre)
+            painter->drawRect(cadre); // Dessine le rectangle 'cadre' sur la mini-vue
         }
 
         void drawBackground(QPainter *painter, const QRectF &) override {
-			// Disable world matrix to work in viewport coordinates
-			painter->setWorldMatrixEnabled(false);
-		
-			// Draw blue background first (covers entire viewport)
-			painter->setBrush(QBrush(QColor(70, 130, 180))); // RGB for blue
-			painter->setPen(Qt::NoPen); // No border
-			painter->drawRect(viewport()->x(), viewport()->y(), viewport()->width(), viewport()->height());
-		}
-		
+            // Désactive la matrice monde pour travailler avec les coordonnées du viewport
+            painter->setWorldMatrixEnabled(false);
+        
+            // Dessine d'abord l'arrière-plan bleu (couvre tout le viewport)
+            painter->setBrush(QBrush(QColor(70, 130, 180))); // Code RGB pour le bleu
+            painter->setPen(Qt::NoPen); // Pas de bordure
+            painter->drawRect(viewport()->x(), viewport()->y(), viewport()->width(), viewport()->height());
+        }
+        
         void resizeEvent(QResizeEvent *) override {
-            if (this->transform().m11() == 1) { // Check if the transformation is not scaled
-                this->fitInView(sceneRect(), Qt::KeepAspectRatio); // Fit the view to the scene
+            if (this->transform().m11() == 1) { // Vérifie si la transformation n'a pas d'échelle appliquée
+                this->fitInView(sceneRect(), Qt::KeepAspectRatio); // Ajuste la vue pour qu'elle tienne dans la scène
             }
         }
 
     private:
-        QRectF cadre; // Rectangle representing the area of the main view that should be highlighted in the mini view
+        // Rectangle représentant la zone de la vue principale qui doit être mise en évidence dans la mini-vue
+        QRectF cadre; 
 };
 
 #endif
